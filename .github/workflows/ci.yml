@@ -58,18 +58,18 @@ jobs:
           set -eux
           mkdir -m 2777 -p "log"
 
-      - name: something?
-        run: |
-          set -eux
-          set -o pipefail
-          exec docker run --user=nobody --volume "$WORKSPACE":/workspace --entrypoint=/usr/bin/find \
-            --security-opt seccomp=unconfined \
-            --init \
-            --rm \
-            --label "jenkins.job=$JOB_NAME" \
-            --label "jenkins.build=$BUILD_NUMBER" \
-            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL)=') \
-            'docker-registry.wikimedia.org/wikimedia-stretch:latest' "/workspace/log" -mindepth 1 -delete
+#       - name: something?
+#         run: |
+#           set -eux
+#           set -o pipefail
+#           exec docker run --user=nobody --volume "$WORKSPACE":/workspace --entrypoint=/usr/bin/find \
+#             --security-opt seccomp=unconfined \
+#             --init \
+#             --rm \
+#             --label "jenkins.job=$JOB_NAME" \
+#             --label "jenkins.build=$BUILD_NUMBER" \
+#             --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL)=') \
+#             'docker-registry.wikimedia.org/wikimedia-stretch:latest' "/workspace/log" -mindepth 1 -delete
 
       - name: quibble
         run: |
