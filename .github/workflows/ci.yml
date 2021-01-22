@@ -20,17 +20,105 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
+# ENV taken from https://integration.wikimedia.org/ci/job/wmf-quibble-selenium-php72-docker/76841/parameters/
+
+    env:
+      BASE_LOG_PATH: 50/644250/4
+      ZUUL_PIPELINE: test
+      ZUUL_UUID: c5d28bd79ad041dab22cf748bf504b8f
+      LOG_PATH: 50/644250/4/test/wmf-quibble-selenium-php72-docker/c5d28bd
+      ZUUL_VOTING: 1
+      EXT_DEPENDENCIES: mediawiki/extensions/AbuseFilter\nmediawiki/extensions/AntiSpoof\nmediawiki/extensions/Babel\nmediawiki/extensions/BetaFeatures\nmediawiki/extensions/CheckUser\nmediawiki/extensions/CirrusSearch\nmediawiki/extensions/Cite\nmediawiki/extensions/CiteThisPage\nmediawiki/extensions/CodeEditor\nmediawiki/extensions/ConfirmEdit\nmediawiki/extensions/ContentTranslation\nmediawiki/extensions/Echo\nmediawiki/extensions/Elastica\nmediawiki/extensions/EventLogging\nmediawiki/extensions/EventStreamConfig\nmediawiki/extensions/FileImporter\nmediawiki/extensions/Flow\nmediawiki/extensions/Gadgets\nmediawiki/extensions/GeoData\nmediawiki/extensions/GlobalCssJs\nmediawiki/extensions/GlobalPreferences\nmediawiki/extensions/GuidedTour\nmediawiki/extensions/ImageMap\nmediawiki/extensions/InputBox\nmediawiki/extensions/Interwiki\nmediawiki/extensions/JsonConfig\nmediawiki/extensions/Kartographer\nmediawiki/extensions/MobileApp\nmediawiki/extensions/MobileFrontend\nmediawiki/extensions/NavigationTiming\nmediawiki/extensions/ParserFunctions\nmediawiki/extensions/PdfHandler\nmediawiki/extensions/Poem\nmediawiki/extensions/SandboxLink\nmediawiki/extensions/Scribunto\nmediawiki/extensions/SiteMatrix\nmediawiki/extensions/SpamBlacklist\nmediawiki/extensions/TemplateData\nmediawiki/extensions/Thanks\nmediawiki/extensions/TimedMediaHandler\nmediawiki/extensions/Translate\nmediawiki/extensions/TwoColConflict\nmediawiki/extensions/UniversalLanguageSelector\nmediawiki/extensions/VisualEditor\nmediawiki/extensions/WikiEditor\nmediawiki/extensions/Wikibase\nmediawiki/extensions/WikibaseCirrusSearch\nmediawiki/extensions/WikibaseMediaInfo\nmediawiki/extensions/WikimediaMessages\nmediawiki/extensions/cldr
+      ZUUL_CHANGE_IDS: 644250,4
+      ZUUL_PATCHSET: 4
+      ZUUL_BRANCH: master
+      MW_COMPOSER_MERGE_MW_IN_VENDOR: 1
+      ZUUL_REF: refs/zuul/master/Zdcab5c229ca64d029b0a658e266999f7
+      ZUUL_COMMIT: a563e14f7b11015c57855a38d220ca7e6505e82c
+      SKIN_DEPENDENCIES: mediawiki/skins/MinervaNeue\nmediawiki/skins/Vector
+      ZUUL_URL: git://contint2001.wikimedia.org
+      ZUUL_CHANGE: 644250
+      ZUUL_CHANGES: mediawiki/core:master:refs/changes/50/644250/4
+      ZUUL_PROJECT: mediawiki/core
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      #- uses: actions/checkout@v2
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+# Script taken from https://integration.wikimedia.org/ci/job/wmf-quibble-selenium-php72-docker/configure
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: setup cache dir
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          mkdir -m 2777 -p cache
+
+      - name: load cached things
+        run: |
+          set -eux
+          set -o pipefail
+          exec docker run --volume "$(pwd)"/cache:/cache \
+          --security-opt seccomp=unconfined \
+          --init \
+          --rm \
+          --label "jenkins.job=$JOB_NAME" \
+          --label "jenkins.build=$BUILD_NUMBER" \
+          --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL)=') \
+          'docker-registry.wikimedia.org/releng/castor:0.2.4' load
+
+      - name: make log dir
+        run: |
+          set -eux
+          mkdir -m 2777 -p "log"
+
+      - name: something?
+        run: |
+          set -eux
+          set -o pipefail
+          exec docker run --user=nobody --volume "$WORKSPACE":/workspace --entrypoint=/usr/bin/find \
+            --security-opt seccomp=unconfined \
+            --init \
+            --rm \
+            --label "jenkins.job=$JOB_NAME" \
+            --label "jenkins.build=$BUILD_NUMBER" \
+            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL)=') \
+            'docker-registry.wikimedia.org/wikimedia-stretch:latest' "/workspace/log" -mindepth 1 -delete
+
+      - name: quibble
+        run: |
+          set -eux
+          set -o pipefail
+          exec docker run --volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M --volume "$(pwd)"/cache:/cache --volume "$(pwd)"/log:/workspace/log \
+            --security-opt seccomp=unconfined \
+            --init \
+            --rm \
+            --label "jenkins.job=$JOB_NAME" \
+            --label "jenkins.build=$BUILD_NUMBER" \
+            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL)=') \
+            'docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.45-s2' --packages-source "vendor" --db "mysql" --db-dir /workspace/db --git-parallel=8 --run selenium
+
+      - name: check output
+        run: |
+          set -eu
+
+          if [[ "$ZUUL_BRANCH" == "REL1_31" ]]; then
+              echo "New rules are too cool for this branch. SKIPPED"
+              exit 0
+          fi
+
+          ERROR_FILES=( mw-dberror.log mw-error.log )
+          echo "Asserting empty files: ${ERROR_FILES[*]}"
+          log_files="$( cd "$WORKSPACE/log"; ls "${ERROR_FILES[@]}" 2> /dev/null || :)"
+          if [ ! "$log_files" ]; then
+              echo "No error files created by MediaWiki. GOOD"
+              exit 0
+          fi
+          echo "Dumping file(s) $log_files"
+          set +e
+              # Use `grep --color . file list` to ensure that file names appear next
+              # to log messages
+              (cd "$WORKSPACE/log"; grep --color . "${ERROR_FILES[@]}" 2> /dev/null)
+          set -e
+          echo -e "MediaWiki emitted some errors. Check output above."
+          exit 1
+
+# TODO add post build?
