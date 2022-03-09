@@ -82,7 +82,7 @@ jobs:
             --label "jenkins.job=$JOB_NAME" \
             --label "jenkins.build=$BUILD_NUMBER" \
             --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL)=') \
-            'docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.45-s2' --packages-source "vendor" --db "mysql" --db-dir /workspace/db --git-parallel=8 --run selenium
+            'docker-registry.wikimedia.org/releng/quibble-buster-php72:0.0.45-s2' --packages-source "vendor" --db "mysql" --db-dir /workspace/db --git-parallel=8 --run selenium
 
       - name: check output
         run: |
