@@ -12,29 +12,29 @@ jobs:
       JOB_NAME: foo
       BUILD_NUMBER: bar
       WORKSPACE: /home/runner/work/addshore/wmf-gha
-      # ENV taken from https://integration.wikimedia.org/ci/job/wmf-quibble-selenium-php72-docker/76841/parameters/
-      BASE_LOG_PATH: 50/644250/4
+      # ENV taken from https://integration.wikimedia.org/ci/job/wmf-quibble-selenium-php72-docker/139752/parameters/
+      BASE_LOG_PATH: 91/769091/1
       ZUUL_PIPELINE: test
-      ZUUL_UUID: c5d28bd79ad041dab22cf748bf504b8f
-      LOG_PATH: 50/644250/4/test/wmf-quibble-selenium-php72-docker/c5d28bd
+      ZUUL_UUID: a5aae79f15834b8e9521e13b1a73f727
+      LOG_PATH: 91/769091/1/test/wmf-quibble-selenium-php72-docker/a5aae79
       ZUUL_VOTING: 1
-      EXT_DEPENDENCIES: mediawiki/extensions/AbuseFilter\nmediawiki/extensions/AntiSpoof\nmediawiki/extensions/Babel\nmediawiki/extensions/BetaFeatures\nmediawiki/extensions/CheckUser\nmediawiki/extensions/CirrusSearch\nmediawiki/extensions/Cite\nmediawiki/extensions/CiteThisPage\nmediawiki/extensions/CodeEditor\nmediawiki/extensions/ConfirmEdit\nmediawiki/extensions/ContentTranslation\nmediawiki/extensions/Echo\nmediawiki/extensions/Elastica\nmediawiki/extensions/EventLogging\nmediawiki/extensions/EventStreamConfig\nmediawiki/extensions/FileImporter\nmediawiki/extensions/Flow\nmediawiki/extensions/Gadgets\nmediawiki/extensions/GeoData\nmediawiki/extensions/GlobalCssJs\nmediawiki/extensions/GlobalPreferences\nmediawiki/extensions/GuidedTour\nmediawiki/extensions/ImageMap\nmediawiki/extensions/InputBox\nmediawiki/extensions/Interwiki\nmediawiki/extensions/JsonConfig\nmediawiki/extensions/Kartographer\nmediawiki/extensions/MobileApp\nmediawiki/extensions/MobileFrontend\nmediawiki/extensions/NavigationTiming\nmediawiki/extensions/ParserFunctions\nmediawiki/extensions/PdfHandler\nmediawiki/extensions/Poem\nmediawiki/extensions/SandboxLink\nmediawiki/extensions/Scribunto\nmediawiki/extensions/SiteMatrix\nmediawiki/extensions/SpamBlacklist\nmediawiki/extensions/TemplateData\nmediawiki/extensions/Thanks\nmediawiki/extensions/TimedMediaHandler\nmediawiki/extensions/Translate\nmediawiki/extensions/TwoColConflict\nmediawiki/extensions/UniversalLanguageSelector\nmediawiki/extensions/VisualEditor\nmediawiki/extensions/WikiEditor\nmediawiki/extensions/Wikibase\nmediawiki/extensions/WikibaseCirrusSearch\nmediawiki/extensions/WikibaseMediaInfo\nmediawiki/extensions/WikimediaMessages\nmediawiki/extensions/cldr
-      ZUUL_CHANGE_IDS: 644250,4
-      ZUUL_PATCHSET: 4
+      EXT_DEPENDENCIES: mediawiki/extensions/AbuseFilter\nmediawiki/extensions/AntiSpoof\nmediawiki/extensions/Babel\nmediawiki/extensions/BetaFeatures\nmediawiki/extensions/CheckUser\nmediawiki/extensions/CirrusSearch\nmediawiki/extensions/Cite\nmediawiki/extensions/CiteThisPage\nmediawiki/extensions/CodeEditor\nmediawiki/extensions/ConfirmEdit\nmediawiki/extensions/ContentTranslation\nmediawiki/extensions/Disambiguator\nmediawiki/extensions/Echo\nmediawiki/extensions/Elastica\nmediawiki/extensions/EventBus\nmediawiki/extensions/EventLogging\nmediawiki/extensions/EventStreamConfig\nmediawiki/extensions/FileImporter\nmediawiki/extensions/Flow\nmediawiki/extensions/Gadgets\nmediawiki/extensions/GeoData\nmediawiki/extensions/GlobalCssJs\nmediawiki/extensions/GlobalPreferences\nmediawiki/extensions/Graph\nmediawiki/extensions/GrowthExperiments\nmediawiki/extensions/GuidedTour\nmediawiki/extensions/ImageMap\nmediawiki/extensions/InputBox\nmediawiki/extensions/Interwiki\nmediawiki/extensions/JsonConfig\nmediawiki/extensions/Kartographer\nmediawiki/extensions/Math\nmediawiki/extensions/MobileApp\nmediawiki/extensions/MobileFrontend\nmediawiki/extensions/NavigationTiming\nmediawiki/extensions/PageImages\nmediawiki/extensions/PageViewInfo\nmediawiki/extensions/ParserFunctions\nmediawiki/extensions/PdfHandler\nmediawiki/extensions/Poem\nmediawiki/extensions/ProofreadPage\nmediawiki/extensions/SandboxLink\nmediawiki/extensions/Scribunto\nmediawiki/extensions/SiteMatrix\nmediawiki/extensions/SpamBlacklist\nmediawiki/extensions/TemplateData\nmediawiki/extensions/Thanks\nmediawiki/extensions/TimedMediaHandler\nmediawiki/extensions/Translate\nmediawiki/extensions/UniversalLanguageSelector\nmediawiki/extensions/VisualEditor\nmediawiki/extensions/WikiEditor\nmediawiki/extensions/Wikibase\nmediawiki/extensions/WikibaseCirrusSearch\nmediawiki/extensions/WikibaseMediaInfo\nmediawiki/extensions/WikimediaMessages\nmediawiki/extensions/cldr
+      ZUUL_CHANGE_IDS: 769091,1
+      ZUUL_PATCHSET: 1
       ZUUL_BRANCH: master
       MW_COMPOSER_MERGE_MW_IN_VENDOR: 1
-      ZUUL_REF: refs/zuul/master/Zdcab5c229ca64d029b0a658e266999f7
-      ZUUL_COMMIT: a563e14f7b11015c57855a38d220ca7e6505e82c
+      ZUUL_REF: refs/zuul/master/Zfedb00722d874f9ba3b60049707c2ced
+      ZUUL_COMMIT: ffe9eb816146cde99bde7dca4ce172a25a1715ae
       SKIN_DEPENDENCIES: mediawiki/skins/MinervaNeue\nmediawiki/skins/Vector
       ZUUL_URL: git://contint2001.wikimedia.org
-      ZUUL_CHANGE: 644250
-      ZUUL_CHANGES: mediawiki/core:master:refs/changes/50/644250/4
+      ZUUL_CHANGE: 769091
+      ZUUL_CHANGES: mediawiki/core:master:refs/changes/91/769091/1
       ZUUL_PROJECT: mediawiki/core
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
 
-# Scripts taken from https://integration.wikimedia.org/ci/job/wmf-quibble-selenium-php72-docker/configure
+# Scripts taken from "Build" seciond of https://integration.wikimedia.org/ci/job/wmf-quibble-selenium-php72-docker/configure
 
       - name: setup cache dir
         run: |
@@ -69,29 +69,24 @@ jobs:
 #             --label "jenkins.job=$JOB_NAME" \
 #             --label "jenkins.build=$BUILD_NUMBER" \
 #             --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL)=') \
-#             'docker-registry.wikimedia.org/wikimedia-stretch:latest' "/workspace/log" -mindepth 1 -delete
+#             'docker-registry.wikimedia.org/wikimedia-buster:latest' "/workspace/log" -mindepth 1 -delete
 
       - name: quibble
         run: |
           set -eux
           set -o pipefail
-          exec docker run --volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M --volume "$(pwd)"/cache:/cache --volume "$(pwd)"/log:/workspace/log \
+          exec docker run --entrypoint=quibble-with-apache --tmpfs /workspace/db:size=320M --volume "$(pwd)"/src:/workspace/src --volume "$(pwd)"/cache:/cache --volume "$(pwd)"/log:/workspace/log --volume /srv/git:/srv/git:ro \
             --security-opt seccomp=unconfined \
             --init \
             --rm \
             --label "jenkins.job=$JOB_NAME" \
             --label "jenkins.build=$BUILD_NUMBER" \
             --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL)=') \
-            'docker-registry.wikimedia.org/releng/quibble-buster-php72:0.0.45-s2' --packages-source "vendor" --db "mysql" --db-dir /workspace/db --git-parallel=8 --run selenium
+            'docker-registry.wikimedia.org/releng/quibble-buster-php72:1.4.3' --packages-source "vendor" --db "mysql" --db-dir /workspace/db --git-parallel=8 --run selenium --parallel-npm-install
 
       - name: check output
         run: |
           set -eu
-
-          if [[ "$ZUUL_BRANCH" == "REL1_31" ]]; then
-              echo "New rules are too cool for this branch. SKIPPED"
-              exit 0
-          fi
 
           ERROR_FILES=( mw-dberror.log mw-error.log )
           echo "Asserting empty files: ${ERROR_FILES[*]}"
@@ -108,5 +103,3 @@ jobs:
           set -e
           echo -e "MediaWiki emitted some errors. Check output above."
           exit 1
-
-# TODO add post build?
