@@ -71,11 +71,12 @@ jobs:
 #             --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL)=') \
 #             'docker-registry.wikimedia.org/wikimedia-buster:latest' "/workspace/log" -mindepth 1 -delete
 
+# NOTE: removed the --volume "$(pwd)"/src:/workspace/src from the docker run below
       - name: quibble
         run: |
           set -eux
           set -o pipefail
-          exec docker run --entrypoint=quibble-with-apache --tmpfs /workspace/db:size=320M --volume "$(pwd)"/src:/workspace/src --volume "$(pwd)"/cache:/cache --volume "$(pwd)"/log:/workspace/log --volume /srv/git:/srv/git:ro \
+          exec docker run --entrypoint=quibble-with-apache --tmpfs /workspace/db:size=320M --volume "$(pwd)"/cache:/cache --volume "$(pwd)"/log:/workspace/log --volume /srv/git:/srv/git:ro \
             --security-opt seccomp=unconfined \
             --init \
             --rm \
